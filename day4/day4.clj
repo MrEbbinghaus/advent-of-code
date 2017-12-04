@@ -513,11 +513,12 @@
 
 
 (defn task1 [input]
-    (count (filter #(= (count %) (count (set %)))) input))
+    (count (filter (partial apply distinct?) input)))
 
 (defn task2 [input]
-    (count (filter #(= (count %) (count (set (map set %)))) input)))
+    (count (filter (partial apply distinct?) (map (partial map sort) input))))
 
-(print (task1 my-input))
+(task1 my-input)
 
-(print (task2 my-input))
+(task2 my-input)
+
