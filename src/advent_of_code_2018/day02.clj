@@ -7,8 +7,7 @@
   (->> input
       (map #(->> %
                  frequencies
-                 vals frequencies ; How many singles, doubles and triples?
-                 keys ; We don't need 'how many?', we only want: "Are there any..?"
+                 vals distinct ; "Are there any..?"
                  (filter (fn [x] (> x 1))))) ; We don't care about singles
       (reduce concat) ; we want to view them as a whole
       frequencies vals ; count how many of each
