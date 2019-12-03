@@ -46,7 +46,7 @@
 
 (comment
   "Task 1"
-  (->> (merge-with clojure.set/union
+  (->> (merge-with merge
          (wire-grid :first (first input))
          (wire-grid :second (second input)))
     intersections
@@ -56,7 +56,7 @@
     (d [0 0]))
 
   "Task 2"
-  (->> (merge-with clojure.set/union
+  (->> (merge-with merge
          (wire-grid :wire1 (first input))
          (wire-grid :wire2 (second input)))
     intersections
