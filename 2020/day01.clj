@@ -3,29 +3,36 @@
   (:require
     [clojure.string :as str]))
 
+;; Read from stdin and return a set of integers
 (def *input* (set (->> *in* slurp str/split-lines (map #(Integer/parseInt %)))))
 
-(defn find-pair [input target-sum]
-  (let [has-partner (fn [x] (input (- target-sum x)))
-        first-number (some has-partner input)]
-    (when first-number
-      #{first-number (- target-sum first-number)})))
+(defn find-pair
+  "In a set of `input` returns a set of two numbers that sum to `sum`.
 
-(defn solve-task1
-  ([input] (solve-task1 input 2020))
-  ([input target-sum]
-   (let [[x y] (vec (find-pair input target-sum))]
-     (* x y))))
+  Returns nil if there is no pair."
+  [input sum]
+  (letfn [(has-partner [x] (get input (- sum x)))]
+    (when-let [first-number (some has-partner input)]
+      #{first-number (- sum first-number)})))
 
-(defn find-triplet [input number]
-  (let [new-input (disj input number)
-        new-target-sum (- 2020 number)]
-    (when-let [pair (find-pair new-input new-target-sum)]
-      (conj pair number))))
+(defn solve-task1 [input]
+  (let [pair (find-pair input 2020)]
+    (apply * pair)))
+
+(defn find-triplet
+  "Given a set of `input` numbers and one `candidate`, returns (when possible) a triplet that sums to 2020.
+   The `candidate` is one member of the triplet.
+
+   Returns nil if there is no triplet for the given `candidate`"
+  [input sum candidate]
+  (let [new-input (disj input candidate)
+        new-sum (- sum candidate)]
+    (when-let [pair (find-pair new-input new-sum)]
+      (conj pair candidate))))
 
 (defn solve-task2 [input]
-  (let [triplet (some (partial find-triplet input) input)]
+  (let [triplet (some (partial find-triplet input 2020) input)]
     (apply * triplet)))
 
-(println "Answer for star 1: " (solve-task1 *input*))
-(println "Answer for star 2: " (solve-task2 *input*))
+(println "Answer for star 1: " (time (solve-task1 *input*)))
+(println "Answer for star 2: " (time (solve-task2 *input*)))
