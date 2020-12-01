@@ -4,7 +4,7 @@
     [clojure.string :as str]))
 
 ;; Read from stdin and return a set of integers
-(def *input* (set (->> *in* slurp str/split-lines (map #(Integer/parseInt %)))))
+(def *input* (apply sorted-set (->> *in* slurp str/split-lines (map #(Integer/parseInt %)))))
 
 (defn find-pair
   "In a set of `input` returns a set of two numbers that sum to `sum`.
