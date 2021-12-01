@@ -3,4 +3,5 @@
 .idea
 *.iml
 
-2020/inputs
+**/inputs
+.nrepl-port
