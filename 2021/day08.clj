@@ -8,8 +8,7 @@
 (defn parse-input [input]
   (->> input
     (re-seq #"\w+")
-    (map #(into #{} %))
-    (partition 14)
+    (into [] (comp (map set) (partition-all 14)))
     (map #(split-at 10 %))))
 
 (def input (parse-input (slurp input-path)))
@@ -71,16 +70,13 @@
          nine 9}]
     (reduce conj-number (map to-value output))))
 
-
-
 (defn task2
   {:test #(assert (= 61229 (task2 test-input)))}
   [input]
-  (reduce + (map process-entry input)))
-
+  (reduce + (pmap process-entry input)))
 
 ;;; Print output
 (print "Task 1: ")
-(println (task1 input))
+(println (time (task1 input)))
 (print "Task 2: ")
 (println (time (task2 input)))
